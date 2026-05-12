@@ -1,0 +1,78 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.2
+    container_name: db_playground_postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: playground
+    volumes:
+      - ./postgres/dataset/playground.sql:/docker-entrypoint-initdb.d/playground.sql
+      - db_playground_pgdata:/var/lib/postgresql/data
+    ports:
+      - "6432:5432"
+
+  mysql:
+    image: mysql:8
+    container_name: db_playground_mysql
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: playground
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./mysql/dataset:/docker-entrypoint-initdb.d
+      - db_playground_mysqldata:/var/lib/mysql
+    ports:
+      - "33061:3306"
+
+  mongo:
+    image: mongo:6.0
+    container_name: db_playground_mongo
+    environment:
+      MONGO_INITDB_DATABASE: playground
+    volumes:
+      - db_playground_mongodata:/data/db
+    ports:
+      - "37017:27017"
+
+  mongo-seed:
+    build: mongodb
+    container_name: db_pg_mongo_seed
+    environment:
+      - DB_NAME=playground
+    links:
+      - mongo
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.0
+    container_name: db_playground_elasticsearch
+    environment:
+      node.name: elasticsearch
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  redis:
+    image: redis:7.2
+    container_name: db_playground_redis
+    ports:
+      - "6379:6379"
+
+  elasticsearch-seed:
+    build: elasticsearch
+    container_name: db_pg_elastic_seed
+    environment:
+      - ES_HOST=elasticsearch
+      - ES_PORT=9200
+    links:
+      - elasticsearch
+
+volumes:
+  db_playground_pgdata:
+  db_playground_mysqldata:
+  db_playground_mongodata:
