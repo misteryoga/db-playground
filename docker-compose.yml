@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_DB: playground
     volumes:
-      - ./postgres/dataset/playground.sql:/docker-entrypoint-initdb.d/playground.sql
+      - ./postgres/datasets/playground.sql:/docker-entrypoint-initdb.d/playground.sql
       - db_playground_pgdata:/var/lib/postgresql/data
     ports:
       - "6432:5432"
@@ -22,7 +22,7 @@ services:
       MYSQL_DATABASE: playground
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./mysql/dataset:/docker-entrypoint-initdb.d
+      - ./mysql/datasets:/docker-entrypoint-initdb.d
       - db_playground_mysqldata:/var/lib/mysql
     ports:
       - "33061:3306"

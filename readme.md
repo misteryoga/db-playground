@@ -2,7 +2,7 @@
 
 The repository has a simple docker-compose file and a few scripts to set up any database playground with sample data in seconds. It is a great way to test your database queries and learn about the database.
 
-You can run a single command to setup playground dataset in PostgreSQL, MySQL, PostgreSQL and some sample indexes (omdb and shakespeare) in Elasticsearch.
+You can run a single command to setup playground datasets in PostgreSQL, MySQL, PostgreSQL and some sample indexes (omdb and shakespeare) in Elasticsearch.
 
 # Usage
 
